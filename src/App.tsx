@@ -65,12 +65,12 @@ function App():JSX.Element {
 
   return (
     <>
-      <Container maxWidth="sm" sx={{border:"1px solid #000", padding:7,borderRadius:2,boxShadow:"0px 30px 30px rgba(0, 0, 0, 0.1)", marginTop:5}}>
+      <Container maxWidth="sm" sx={{border:"1px solid #000", padding:{ xs: 3, sm: 7 },borderRadius:2,boxShadow:"0px 30px 30px rgba(0, 0, 0, 0.1)", marginTop:5}}>
         <form onSubmit={handleSubmit} style={{marginBottom:"30px"}}>
           <Stack>
             <TextField fullWidth label="Add Todo" variant="outlined" value={todoText} onChange={(e) => setTodoText(e.target.value)}>
             </TextField>
-            <Button sx={{marginTop:"10px"}} type="submit" variant="contained" color="primary">Add Todo</Button>
+            <Button sx={{ marginTop: { xs: 1, sm: "15px" }, fontWeight:"bold" }} type="submit" variant="contained" color="primary">Add Todo</Button>
           </Stack>
         </form>
         <List sx={{ width: '100%', bgcolor: 'background.paper',display:"flex",flexDirection:"column", gap:"10px"}}>
@@ -96,7 +96,7 @@ function App():JSX.Element {
                         inputProps={{ 'aria-labelledby': labelId }}
                       />
                     </ListItemIcon>
-                    <ListItemText id={labelId} primary={<span style={{ textDecoration: todo.isCompleted ? "line-through" : "none" , fontSize: "20px"}}>{todo.text}</span>} secondary={`${todo.createdAt}`} />
+                    <ListItemText id={labelId} primary={<span className='todoText' style={{ textDecoration: todo.isCompleted ? "line-through" : "none"}}>{todo.text}</span>} secondary={`${todo.createdAt}`} />
                   </ListItemButton>
                 </ListItem>
                 <Divider />
