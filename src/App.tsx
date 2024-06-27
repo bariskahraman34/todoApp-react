@@ -12,7 +12,20 @@ type Todo = {
 }
 
 function App():JSX.Element {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const [todos, setTodos] = useState<Todo[]>([
+    {
+      id: uuidv4(),
+      text:"Welcome to Todo App",
+      isCompleted:false, 
+      createdAt: new Date().toLocaleDateString()
+    },
+    {
+      id: uuidv4(),
+      text: "This is a completed todo",
+      isCompleted:true, 
+      createdAt: new Date().toLocaleDateString()
+    }
+  ]);
   const [todoText, setTodoText] = useState<string>('');
   const [checked, setChecked] = useState<number[]>([]);
 
@@ -31,7 +44,6 @@ function App():JSX.Element {
   const handleToggle = (index: number) => () => {
     const newChecked = [...checked];
     const todoToUpdate = todos[index];
-    console.log('todoToUpdate  ', todoToUpdate)
 
     if (newChecked.includes(index)) {
       newChecked.splice(newChecked.indexOf(index), 1);
@@ -46,26 +58,29 @@ function App():JSX.Element {
     setTodos(updatedTodos);
   };
 
-  console.log(todos)
-  
+  const deleteTodo = (todoId: string) => {
+    const updateTodos = todos.filter(todo => todoId !== todo.id)
+    setTodos(updateTodos);
+  }
+
   return (
     <>
-      <Container maxWidth="sm">
-        <form onSubmit={handleSubmit}>
+      <Container maxWidth="sm" sx={{border:"1px solid #000", padding:7,borderRadius:2,boxShadow:"0px 30px 30px rgba(0, 0, 0, 0.1)", marginTop:5}}>
+        <form onSubmit={handleSubmit} style={{marginBottom:"30px"}}>
           <Stack>
             <TextField fullWidth label="Add Todo" variant="outlined" value={todoText} onChange={(e) => setTodoText(e.target.value)}>
             </TextField>
             <Button sx={{marginTop:"10px"}} type="submit" variant="contained" color="primary">Add Todo</Button>
           </Stack>
         </form>
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+        <List sx={{ width: '100%', bgcolor: 'background.paper',display:"flex",flexDirection:"column", gap:"10px"}}>
           {todos.map((todo,index) => {
             const labelId = `checkbox-list-label-${index}`
             return(
               <React.Fragment key={index}>              
                 <ListItem
                 secondaryAction={
-                  <IconButton edge="end" aria-label="comments">
+                  <IconButton edge="end" aria-label="comments" onClick={() => deleteTodo(todo.id)}>
                     <DeleteTwoToneIcon />
                   </IconButton>
                 }
@@ -75,7 +90,7 @@ function App():JSX.Element {
                     <ListItemIcon>
                       <Checkbox
                         edge="start"
-                        checked={checked.indexOf(index) !== -1}
+                        checked={checked.indexOf(index) !== -1 || todo.isCompleted}
                         tabIndex={-1}
                         disableRipple
                         inputProps={{ 'aria-labelledby': labelId }}
