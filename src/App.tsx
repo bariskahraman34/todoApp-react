@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
-import { Button,TextField,Container,List,ListItem, IconButton, ListItemButton, ListItemIcon, Checkbox, ListItemText, Divider, Stack } from '@mui/material';
+import { Button,TextField,Container,List,ListItem, IconButton, ListItemButton, ListItemIcon, Checkbox, ListItemText, Divider, Stack, AppBar, Toolbar, Typography } from '@mui/material';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -72,6 +72,15 @@ function App():JSX.Element {
 
   return (
     <>
+      <Stack spacing={2} sx={{ flexGrow: 1 }}>
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography variant="h6" component="div">
+              Todo App
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </Stack>
       <Container maxWidth="sm" sx={{border:"1px solid #000", padding:{ xs: 3, sm: 7 },borderRadius:2,boxShadow:"0px 30px 30px rgba(0, 0, 0, 0.1)", marginTop:5}}>
         <form onSubmit={handleSubmit} style={{marginBottom:"30px"}}>
           <Stack>
