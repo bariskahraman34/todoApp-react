@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import { Button,TextField,Container,List,ListItem, IconButton, ListItemButton, ListItemIcon, Checkbox, ListItemText, Divider, Stack } from '@mui/material';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
@@ -12,22 +12,28 @@ type Todo = {
 }
 
 function App():JSX.Element {
-  const [todos, setTodos] = useState<Todo[]>([
+  const storedTodos = JSON.parse(localStorage.getItem('todos')) || [
     {
-      id: uuidv4(),
+      id:uuidv4(),
       text:"Welcome to Todo App",
-      isCompleted:false, 
-      createdAt: new Date().toLocaleDateString()
+      isCompleted:false,
+      createdAt: new Date().toLocaleString()
     },
     {
-      id: uuidv4(),
-      text: "This is a completed todo",
-      isCompleted:true, 
-      createdAt: new Date().toLocaleDateString()
+      id:uuidv4(),
+      text:"This is a completed task",
+      isCompleted:true,
+      createdAt: new Date().toLocaleString()
     }
-  ]);
+  ];
+
+  const [todos, setTodos] = useState<Todo[]| (() => Todo[])>(storedTodos);
   const [todoText, setTodoText] = useState<string>('');
   const [checked, setChecked] = useState<number[]>([]);
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]); 
 
   const handleSubmit = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
