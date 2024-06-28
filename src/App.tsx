@@ -12,7 +12,8 @@ type Todo = {
 }
 
 function App():JSX.Element {
-  const storedTodos = JSON.parse(localStorage.getItem('todos')) || [
+  const storedTodosString = localStorage.getItem('todos');
+  const storedTodos = storedTodosString ? JSON.parse(storedTodosString) : [
     {
       id:uuidv4(),
       text:"Welcome to Todo App",
@@ -27,7 +28,7 @@ function App():JSX.Element {
     }
   ];
 
-  const [todos, setTodos] = useState<Todo[]| (() => Todo[])>(storedTodos);
+  const [todos, setTodos] = useState<Todo[]>(storedTodos);
   const [todoText, setTodoText] = useState<string>('');
   const [checked, setChecked] = useState<number[]>([]);
 
@@ -39,7 +40,7 @@ function App():JSX.Element {
     e.preventDefault();
     if(todoText.trim() === "") return;
 
-    const newTodo = {id: uuidv4(), text:todoText, isCompleted:false , createdAt: new Date().toLocaleString()}
+    const newTodo = {id: uuidv4(), text:todoText, isCompleted:false , createdAt: new Date().toLocaleDateString()}
     
     setTodos(
       [...todos , newTodo]
